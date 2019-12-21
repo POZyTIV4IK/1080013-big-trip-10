@@ -2,32 +2,27 @@ import {createSiteMenuTemplate} from './components/site-menu.js';
 import {createFilterTemplate} from './components/filter.js';
 import {createSortTemplate} from './components/sorter.js';
 import {createEditTemplate} from './components/editor.js';
-import {createTripTemplate} from './components/trip.js';
-import {createContentTemplate} from './components/content.js';
+import {createTripInfoTemplate} from './components/trip-info';
 import {createContentDaysListTemplate} from './components/content-days-list.js';
+import {getUniqueDays, renderComponent} from './utils';
+import {generateDays} from './mock/event.js';
 
-const TASK_COUNT = 3;
+const DAYS_COUNT = 10;
+const daysData = generateDays(DAYS_COUNT);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+const sortedDaysData = daysData.slice().sort((a, b) => a.date.getTime() - b.date.getTime());
+const uniqueDays = getUniqueDays(sortedDaysData);
 
-const siteMainElement = document.querySelector(`.trip-controls`);
-const siteMainElementHeading = siteMainElement.querySelectorAll(`.visually-hidden`);
+const siteHeaderElement = document.querySelector(`.page-header`);
+const siteMainElement = document.querySelector(`.page-main`);
+const routeElement = siteHeaderElement.querySelector(`.trip-info`);
+const controlElement = siteHeaderElement.querySelector(`.trip-controls`);
+const contentElement = siteMainElement.querySelector(`.trip-events`);
 
-render(siteMainElementHeading[0], createSiteMenuTemplate(), `afterend`);
-render(siteMainElementHeading[1], createFilterTemplate(), `afterend`);
+renderComponent(routeElement, createTripInfoTemplate(uniqueDays));
+renderComponent(controlElement, createSiteMenuTemplate());
+renderComponent(controlElement, createFilterTemplate());
 
-const siteTripElement = document.querySelector(`.trip-info`);
-render(siteTripElement, createTripTemplate(), `afterbegin`);
-
-const siteSortElement = document.querySelector(`.trip-events`);
-render(siteSortElement, createSortTemplate(), `beforeend`);
-render(siteSortElement, createEditTemplate(), `beforeend`);
-render(siteSortElement, createContentDaysListTemplate(), `beforeend`);
-
-const siteDaysListElement = siteSortElement.querySelector(`.trip-events__list`);
-
-for (let i = 0; i < TASK_COUNT; i++) {
-  render(siteDaysListElement, createContentTemplate(), `beforeend`);
-}
+renderComponent(contentElement, createSortTemplate());
+renderComponent(contentElement, createEditTemplate(uniqueDays[0].events[0]));
+renderComponent(contentElement, createContentDaysListTemplate(uniqueDays.slice(1)));
