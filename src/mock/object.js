@@ -1,7 +1,7 @@
 import {getRandomInRange, getRandomArrayItem, repeat} from '../utils.js';
 import {EVENT_TYPES, EVENT_OPTIONS} from '../const.js';
 
-const PRICE_MAX = 10000;
+const PRICE_MAX = 1000;
 const PRICE_MIN = 100;
 
 const OPTION_MIN_NUMBER = 0;

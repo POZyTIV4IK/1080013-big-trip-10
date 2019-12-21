@@ -2,9 +2,9 @@ import {createSiteMenuTemplate} from './components/site-menu.js';
 import {createFilterTemplate} from './components/filter.js';
 import {createSortTemplate} from './components/sorter.js';
 import {createEditTemplate} from './components/editor.js';
-import {createTripInfoTemplate} from './components/trip-info';
-import {createContentDaysListTemplate} from './components/content-days-list.js';
-import {getUniqueDays, renderComponent} from './utils';
+import {createTripInfoTemplate} from './components/trip-info.js';
+import {createContentDaysContainerTemplate} from './components/content-days-list-container.js';
+import {getUniqueDays, renderComponent} from './utils.js';
 import {generateDays} from './mock/event.js';
 
 const DAYS_COUNT = 10;
@@ -25,4 +25,4 @@ renderComponent(controlElement, createFilterTemplate());
 
 renderComponent(contentElement, createSortTemplate());
 renderComponent(contentElement, createEditTemplate(uniqueDays[0].events[0]));
-renderComponent(contentElement, createContentDaysListTemplate(uniqueDays.slice(1)));
+renderComponent(contentElement, createContentDaysContainerTemplate(uniqueDays.slice(1)));
